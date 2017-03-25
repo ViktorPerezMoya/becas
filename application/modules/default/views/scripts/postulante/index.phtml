@@ -1,0 +1,40 @@
+<?php
+$postulantes = $this->postulantes;
+?>
+
+<div class="jumbotron">
+    <center><h2>Listado de postulantes</h2></center>
+</div>
+<div style="padding:0 100px">
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="success">
+                <th>Nombre</th>
+                <th>Carrera</th>
+                <th>Delegación</th>
+                <th>Puntos</th>
+                <th>Ver/Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $p = new My\Entity\Postulante();
+            foreach ($postulantes as $p):
+                ?>
+            <tr>
+                <td><?php echo $p->getNombre().' '.$p->getApellido(); ?></td>
+                <td><?php echo $p->getCarrera(); ?></td>
+                <td><?php echo $p->getDelegacion(); ?></td>
+                <td><?php echo $p->getPuntos() ?></td>
+                <td>
+                    <a class="btn btn-info btn-sm" href="<?php echo $this->url(array('controller'=>'postulante','action'=>'ver-postulante','idpostulante'=>$p->getId())); ?>">Ver <i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a class="btn btn-warning btn-sm" href="<?php echo $this->url(array('controller'=>'postulante','action'=>'editar','idpostulante'=>$p->getId())); ?>">Editar <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+                <?php
+            endforeach;
+            ?>
+        </tbody>
+    </table>
+</div>

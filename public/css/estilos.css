@@ -1,0 +1,13 @@
+.detalles {
+  /*IMPORTANTE*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.detalle{
+    width: 80%;
+    /*border-radius: 10px;
+    background-color: #185c57;
+    margin: 20px;
+    padding: 10px;*/
+}

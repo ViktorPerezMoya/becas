@@ -1,0 +1,76 @@
+<?php
+//$p = new My\Entity\Postulante();
+$p = $this->postulante;
+?>
+<div class="jumbotron">
+    <center><h2>Detalles Postulante</h2></center>
+</div>
+<div id="detalles" class="detalles">
+    <div class="detalle">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Datos Personales</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>Nombre:</strong> <?php echo $p->getNombre(); ?></p>
+                <p><strong>Apellido:</strong> <?php echo $p->getApellido(); ?></p>
+                <p><strong>DNI:</strong> <?php echo $p->getDni(); ?></p>
+                <p><strong>CUIL:</strong> <?php echo $p->getCuil(); ?></p>
+                <p><strong>Fecha de Nacimiento:</strong> <?php echo date_format($p->getNacimiento(), 'd-m-Y'); ?></p>
+                <p><strong>Teléfono:</strong> <?php echo $p->getTelFijo(); ?></p>
+                <p><strong>Celular:</strong> <?php echo $p->getTelCelular(); ?></p>
+                <p><strong>Email:</strong> <?php echo $p->getEmail(); ?></p>
+                <p><strong>Puntaje de entrevista:</strong> <?php echo $p->getPuntajeEntrevista(); ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="detalles" class="detalles">
+    <div class="detalle">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">Datos de Dimicilio</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>Distrito:</strong> <?php echo $p->getDistrito(); ?></p>
+                <p><strong>Delegación:</strong> <?php echo $p->getDelegacion(); ?></p>
+                <p><strong>Domicilio:</strong> <?php echo $p->getDomicilio(); ?></p>
+                <p><strong>Propiedad de vivienda:</strong> <?php echo $p->getPropVivienda(); ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="detalles" class="detalles">
+    <div class="detalle">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Datos Académicos</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>Carrera:</strong> <span>&Tab;&Tab;&Tab;</span><?php echo $p->getCarrera(); ?></p>
+                <p><strong>Nombre de carrera:</strong> <?php echo $p->getNombreCarrera(); ?></p>
+                <p><strong>Dirección:</strong> <?php echo $p->getCarreraDireccion(); ?></p>
+                <p><strong>Nivel académico:</strong> <?php echo $p->getNivelAcademico(); ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="detalles" class="detalles">
+    <div class="detalle">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Datos de Familia</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>Obra social:</strong> <?php echo $p->getObraSocial(); ?></p>
+                <p><strong>Hijos en escuela primaria:</strong> <?php echo $p->getHijosPrimaria(); ?></p>
+                <p><strong>Hijos en escuela secundaria:</strong> <?php echo $p->getHijosSecundaria(); ?></p>
+                <p><strong>Hijos en terciario o universitario:</strong> <?php echo $p->getHijosTerciario(); ?></p>
+                <p><strong>Comprobante de impuestos:</strong> <?php echo $p->getComprobantes(); ?></p>
+                <p><strong>Situacion laboral:</strong> <?php echo $p->getSituacionLaboral(); ?></p>
+                <p><strong>Salud familiar:</strong> <?php echo $p->getSaludFamiliar(); ?></p>
+                <p><strong>Puntos totales:</strong> <?php echo $p->getPuntos(); ?></p>
+            </div>
+        </div>
+    </div>
+</div>
