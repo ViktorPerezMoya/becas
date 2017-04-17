@@ -43,7 +43,7 @@ class Familiar {
      */
     protected $parentesco;
     /**
-     * @ManyToOne(targetEntity="Postulante", inversedBy="familiar", cascade={"persist"}, fetch="EAGER")
+     * @ManyToOne(targetEntity="Postulante", inversedBy="familiar", cascade={"persist"})
      * @JoinColumn(name="postulante", referencedColumnName="id")
      */
     protected $postulante;

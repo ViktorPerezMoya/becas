@@ -25,10 +25,62 @@ class Default_PostulanteController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
-        $query = $this->_em->createQuery("SELECT p FROM My\Entity\Postulante p WHERE p.periodo = ?1 ORDER BY p.id DESC");
+        $query = $this->_em->createQuery("SELECT p FROM My\Entity\Postulante p WHERE p.periodo = ?1 ORDER BY p.puntos DESC");
         $query->setParameter(1, date('Y'));
         $postulantes = $query->getResult();
         $this->view->postulantes = $postulantes;
+    }
+
+    function imprimirListadoAction() {
+
+        $this->view->headTitle('Listado de Postulantes');
+        $this->_helper->layout()->disableLayout();
+
+
+        $query = $this->_em->createQuery("SELECT p FROM My\Entity\Postulante p WHERE p.periodo = ?1 ORDER BY p.puntos DESC");
+        $query->setParameter(1, date('Y'));
+        $postulantes = $query->getResult();
+
+
+
+        $pdf = new TCPDF_Application_Resource_TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+
+        // Add a page
+        // This method has several options, check the source code documentation for more information.
+        $pdf->AddPage();
+
+
+        // Set some content to print
+        $html = '<table border="0" cellspacing="3" cellpadding="4">'
+                . '<thead>'
+                . '<tr>'
+                . '<th>Nombre</th>'
+                . '<th>Carrera</th>'
+                . '<th>Delegación</th>'
+                . '<th>Puntos</th>'
+                . '</tr>'
+                . '</thead>'
+                . '<tbody>';
+        $p = new My\Entity\Postulante();
+        foreach ($postulantes as $p) {
+            $html .= '<tr>'
+                    . '<td>' . $p->getNombre() . '</td>'
+                    . '<td>' . $p->getNombreCarrera() . '</td>'
+                    . '<td>' . $p->getDelegacion() . '</td>'
+                    . '<td>' . $p->getPuntos() . '</td>'
+                    . '</tr>';
+        }
+
+        $html .= '</tbody></table>';
+
+        // Print text using writeHTMLCell()
+        $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+        // ---------------------------------------------------------
+        // Close and output PDF document
+        // This method has several options, check the source code documentation for more information.
+        $pdf->Output('listado_de_postulantes' . date('Y') . '.pdf', 'I');
     }
 
     public function nuevoPostulanteAction() {
@@ -84,6 +136,7 @@ class Default_PostulanteController extends Zend_Controller_Action {
                     $postulante->setSituacionLaboral($form4->getElement('situacionlaboral')->getValue());
                     $postulante->setSaludFamiliar($form4->getElement('saludfamiliar')->getValue());
                     $postulante->setPeriodo(date('Y'));
+                    $postulante->setPuntos(0);
                     $postulante->calcularPuntos();
 
                     $this->_em->merge($postulante);
@@ -106,8 +159,8 @@ class Default_PostulanteController extends Zend_Controller_Action {
         $postulante = $this->_em->find('My\Entity\Postulante', $idPostulante);
         $this->view->postulante = $postulante;
     }
-    
-    public function editarAction(){
+
+    public function editarAction() {
         $id = $this->getParam('idpostulante');
         $postulante = $this->_em->find('My\Entity\Postulante', $id);
 
@@ -188,6 +241,7 @@ class Default_PostulanteController extends Zend_Controller_Action {
                     $postulante->setSituacionLaboral($form4->getElement('situacionlaboral')->getValue());
                     $postulante->setSaludFamiliar($form4->getElement('saludfamiliar')->getValue());
                     $postulante->setPeriodo(date('Y'));
+                    $postulante->setPuntos(0);
                     $postulante->calcularPuntos();
 
                     $this->_em->merge($postulante);
@@ -204,6 +258,66 @@ class Default_PostulanteController extends Zend_Controller_Action {
                 }
             }
         }
+    }
+
+    function familiaresAction() {
+        $id = $this->getParam('id');
+        $postulante = $this->_em->find('My\Entity\Postulante', $id);
+        $this->view->postulante = $postulante;
+    }
+
+    function nuevoFamiliarAction() {
+        $idpostulante = $this->getParam('idpostulante');
+        $postulante = $this->_em->find('My\Entity\Postulante', $idpostulante);
+
+        $form = new Default_Form_FamiliarForm();
+        $this->view->form = $form;
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            if ($form->isValid($data)) {
+
+                $this->_em->getConnection()->beginTransaction();
+                try {
+                    $f = new My\Entity\Familiar();
+                    $f->setNombreF($form->nombre->getValue());
+                    $f->setDniF($form->dni->getValue());
+                    $f->setEdad($form->edad->getValue());
+                    $f->setIngreso($form->ingreso->getValue());
+                    $f->setParentesco($form->parentesco->getValue());
+                    $f->setPostulante($postulante);
+
+
+                    $postulante->setPuntos(0);
+                    $postulante->calcularPuntos();
+
+                    $this->_em->merge($f);
+                    $this->_em->merge($postulante);
+                    $this->_em->flush();
+                    $this->_em->getConnection()->commit();
+
+                    $this->getRequest()->clearParams();
+                    $this->_helper->redirector('familiares', 'postulante', 'default', array('id' => $idpostulante));
+                } catch (Exception $ex) {
+                    $this->_em->getConnection()->rollback();
+                    $this->_em->close();
+                    var_dump($ex);
+                    die();
+                }
+            }
+        }
+    }
+
+    public function borrarFamiliarAction() {
+        $idfamiliar = $this->getParam('idfamiliar');
+        $idpostulante = $this->getParam('idpostulante');
+
+        $f = $this->_em->find('My\Entity\Familiar',$idfamiliar);
+        $this->_em->remove($f);
+        $this->_em->flush();
+        $this->_em->getConnection()->commit();
+
+        $this->_helper->redirector('familiares', 'postulante', 'default', array('id' => $idpostulante));
     }
 
 }

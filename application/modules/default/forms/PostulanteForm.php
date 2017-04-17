@@ -61,7 +61,6 @@ class Default_Form_PostulanteForm extends Zend_Form {
         $celular->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->setAttribs(array('class' => 'form-control', 'min' => 0,'placeholder'=>'Ingrese celular'))
-                ->setRequired()
                 ->addErrorMessage('Campo requerido');
         $celular->setLabel('Celular: ');
 

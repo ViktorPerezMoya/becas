@@ -1,0 +1,39 @@
+<?php $p = $this->postulante; ?>
+<div class="jumbotron">
+    <center><h1>Familiares de <?php echo $p->getNombre() . ' ' . $p->getApellido(); ?></h1></center>
+</div>
+<div style="display: flex; align-content: center; justify-content: center;">
+    
+    <div class="col-md-6">
+        <a style="float: right;" class="btn btn-warning" href="<?php echo $this->url(array('controller'=>'postulante','action'=>'nuevo-familiar','idpostulante'=>$p->getId())); ?>">Nuevo Familiar</a>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Edad</th>
+                    <th>Ingreso</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $familiares = $p->obtenerFamiliares();
+                $f = new My\Entity\Familiar();
+                foreach ($familiares as $f) {
+                    ?>
+                <tr>
+                    <td><?php echo $f->getNombreF(); ?></td>
+                    <td><?php echo $f->getDniF(); ?></td>
+                    <td><?php echo $f->getEdad(); ?></td>
+                    <td><?php echo $f->getIngreso(); ?></td>
+                    <td><a class="btn btn-danger btn-sm" href="<?php echo $this->url(array('controller'=>'postulante','action'=>'borrar-familiar','idfamiliar'=>$f->getIdFamiliar(),'idpostulabte'=>$p->getId())); ?>">Borrar</a></td>
+                </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+
+    </div>
+</div>

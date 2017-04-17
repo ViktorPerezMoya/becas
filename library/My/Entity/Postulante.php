@@ -163,16 +163,15 @@ class Postulante {
      */
     protected $puntos;
     /**
-     * @var Collection
-     * @OneToMany(targetEntity="Familiar", mappedBy="postulante", cascade={"persist"}, fetch="EAGER")
-     */
-    protected $familiares;
-    /**
      * 
      * @var integer
      * @Column(type="integer")
      */
     protected $periodo;
+    /**
+     * @OneToMany(targetEntity="Familiar", mappedBy="postulante", cascade={"persist"}, fetch="EAGER")
+     */
+    protected $familiares;
     
     function __construct() {
         $this->familiares = new \Doctrine\Common\Collections\ArrayCollection();
@@ -666,7 +665,7 @@ class Postulante {
         $ingresosFamiliares = 0;
         if (count($this->obtenerFamiliares()) > 0) {
             foreach ($this->obtenerFamiliares() as $familiar) {
-                $ingresosFamiliares = $ingresosFamiliares + $familiar['ingreso'];
+                $ingresosFamiliares = $ingresosFamiliares + $familiar->getIngreso();
             }
             var_dump($ingresosFamiliares);
             if ($ingresosFamiliares <= 3000) {

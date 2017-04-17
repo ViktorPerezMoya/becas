@@ -33,6 +33,7 @@
           </controllersDirectory>
           <formsDirectory>
             <formFile formName="PostulanteForm"/>
+            <formFile formName="FamiliarForm"/>
           </formsDirectory>
           <layoutsDirectory enabled="false"/>
           <modelsDirectory/>
@@ -50,6 +51,15 @@
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="postulante">
                 <viewScriptFile forActionName="editar"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="postulante">
+                <viewScriptFile forActionName="imprimirListado"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="postulante">
+                <viewScriptFile forActionName="familiares"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="postulante">
+                <viewScriptFile forActionName="nuevoFamiliar"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
             <viewHelpersDirectory/>
